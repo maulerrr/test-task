@@ -4,9 +4,9 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_DB: test-task
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1111
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     networks:
@@ -22,8 +22,8 @@ services:
       - "8081:8080"
     environment:
       PORT: 8080
-      JWT_SECRET_KEY: testtest
-      DB_SOURCE: postgresql://postgres:1111@db:5432/test-task?sslmode=disable
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      DB_SOURCE: ${DB_SOURCE}
     networks:
       - app-network
 
@@ -35,11 +35,10 @@ services:
       - "8082:8080"
     environment:
       PORT: 8080
-      JWT_SECRET_KEY: testtest
-      DB_SOURCE: postgresql://postgres:1111@db:5432/test-task?sslmode=disable
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      DB_SOURCE: ${DB_SOURCE}
     networks:
       - app-network
-
 
 networks:
   app-network:
