@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: test-task
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1111
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      PORT: 8080
+      JWT_SECRET_KEY: testtest
+      DB_SOURCE: postgresql://postgres:1111@db:5432/test-task?sslmode=disable
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    environment:
+      PORT: 8080
+      JWT_SECRET_KEY: testtest
+      DB_SOURCE: postgresql://postgres:1111@db:5432/test-task?sslmode=disable
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
